@@ -27,15 +27,15 @@ class CalcularApp extends StatefulWidget {
 }
 
 class _CalcularAppState extends State<CalcularApp> {
-  int? firstNum;
-  int? secondNum;
+  double firstNum = 0;
+  double secondNum = 0;
   String history = '';
   String textToDisplay = '';
   String res = '';
   String operation = '';
+  String display = '';
 
   void btnOnClick(String btnVal) {
-    print(btnVal);
     if (btnVal == 'C') {
       textToDisplay = '';
       firstNum = 0;
@@ -47,46 +47,47 @@ class _CalcularAppState extends State<CalcularApp> {
       secondNum = 0;
       res = '';
       history = '';
-    } /*else if (btnVal == '1' ||
-        btnVal == '2' ||
-        btnVal == '3' ||
-        btnVal == '4' ||
-        btnVal == '5' ||
-        btnVal == '6' ||
-        btnVal == '7' ||
-        btnVal == '8' ||
-        btnVal == '9' ||
-        btnVal == '0' ||
-        btnVal == '00') {
-      textToDisplay = btnVal;*/
-    else if (btnVal == '+' || btnVal == '-' || btnVal == 'X' || btnVal == '÷') {
-      firstNum = int.parse(textToDisplay);
-      res = '';
+    } else if (btnVal == '+/-') {
+      if (textToDisplay[0] != '-') {
+        res = '-$textToDisplay';
+      } else {
+        res = textToDisplay.substring(1);
+      }
+    } else if (btnVal == '<') {
+      res = textToDisplay.substring(0, textToDisplay.length - 1);
+    } else if (btnVal == '+' ||
+        btnVal == '-' ||
+        btnVal == 'X' ||
+        btnVal == '÷') {
+      firstNum = double.parse(textToDisplay);
+      res = textToDisplay + btnVal;
       operation = btnVal;
+      res = '';
     } else if (btnVal == '=') {
-      secondNum = int.parse(textToDisplay);
+      secondNum = double.parse(textToDisplay);
       if (operation == '+') {
-        res = (firstNum! + secondNum!).toString();
+        res = (firstNum + secondNum).toString();
         history =
             firstNum.toString() + operation.toString() + secondNum.toString();
       }
       if (operation == '-') {
-        res = (firstNum! - secondNum!).toString();
+        res = (firstNum - secondNum).toString();
         history =
             firstNum.toString() + operation.toString() + secondNum.toString();
       }
       if (operation == 'X') {
-        res = (firstNum! * secondNum!).toString();
+        res = (firstNum * secondNum).toString();
         history =
             firstNum.toString() + operation.toString() + secondNum.toString();
       }
       if (operation == '÷') {
-        res = (firstNum! / secondNum!).toString();
+        res = (firstNum / secondNum).toString();
         history =
             firstNum.toString() + operation.toString() + secondNum.toString();
       }
     } else {
-      res = int.parse(textToDisplay).toString();
+      res = textToDisplay + btnVal;
+      print(res);
     }
     setState(() {
       textToDisplay = res;
@@ -101,21 +102,20 @@ class _CalcularAppState extends State<CalcularApp> {
         ),
         body: Column(children: [
           Container(
-            width: MediaQuery.of(context).size.width,
-            height: 150,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child: Container(
-                alignment: Alignment.bottomRight,
-                child: Text(
-                  history,
-                  style: TextStyle(
-                      fontSize: 24, color: Color.fromARGB(255, 145, 142, 142)),
+              width: MediaQuery.of(context).size.width,
+              height: 150,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: Container(
+                  alignment: Alignment.bottomRight,
+                  child: Text(history,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        color: Colors.black45,
+                      )),
                 ),
               ),
-            ),
-            color: Colors.blueGrey[600],
-          ),
+              color: Colors.white),
           Container(
             width: MediaQuery.of(context).size.width,
             child: Padding(
@@ -124,11 +124,11 @@ class _CalcularAppState extends State<CalcularApp> {
                 alignment: Alignment.bottomRight,
                 child: Text(
                   textToDisplay,
-                  style: TextStyle(fontSize: 48, color: Colors.white),
+                  style: TextStyle(fontSize: 48, color: Colors.black),
                 ),
               ),
             ),
-            color: Colors.blueGrey[600],
+            color: Colors.white,
           ),
           Expanded(
             child: Container(
@@ -146,16 +146,16 @@ class _CalcularAppState extends State<CalcularApp> {
                       children: [
                         CalculatorButton(
                             text: 'C',
-                            fillcolor: Color.fromRGBO(66, 66, 66, 1),
+                            fillcolor: Colors.red,
                             callback: btnOnClick),
                         CalculatorButton(
-                          text: '+/-',
-                          fillcolor: Color.fromRGBO(66, 66, 66, 1),
+                          text: '<',
+                          fillcolor: Colors.red,
                           callback: btnOnClick,
                         ),
                         CalculatorButton(
                           text: 'AC',
-                          fillcolor: Color.fromRGBO(66, 66, 66, 1),
+                          fillcolor: Colors.red,
                           callback: btnOnClick,
                         ),
                         CalculatorButton(
@@ -229,7 +229,7 @@ class _CalcularAppState extends State<CalcularApp> {
                           callback: btnOnClick,
                         ),
                         CalculatorButton(
-                          text: '<',
+                          text: '+/-',
                           fillcolor: Color.fromRGBO(117, 117, 117, 1),
                           callback: btnOnClick,
                         ),

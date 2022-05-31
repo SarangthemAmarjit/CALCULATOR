@@ -14,21 +14,24 @@ class CalculatorButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: fillcolor,
-      ),
-      child: Center(
-        child: TextButton(
-            onPressed: (() => callback(text)),
-            child: Text(
-              text,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                  color: Colors.white),
-            )),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: fillcolor,
+        ),
+        child: Center(
+          child: TextButton(
+              onPressed: (() => callback(text)),
+              child: Text(
+                text,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    color: Colors.white),
+              )),
+        ),
       ),
     );
   }
