@@ -27,8 +27,11 @@ class CalcularApp extends StatefulWidget {
 }
 
 class _CalcularAppState extends State<CalcularApp> {
-  double firstNum = 0;
-  double secondNum = 0;
+  double firstnum2 = 0;
+  double secondnum2 = 0;
+
+  int firstNum = 0;
+  int secondNum = 0;
   String history = '';
   String textToDisplay = '';
   String res = '';
@@ -36,6 +39,7 @@ class _CalcularAppState extends State<CalcularApp> {
   String display = '';
 
   void btnOnClick(String btnVal) {
+   
     if (btnVal == 'C') {
       textToDisplay = '';
       firstNum = 0;
@@ -47,24 +51,30 @@ class _CalcularAppState extends State<CalcularApp> {
       secondNum = 0;
       res = '';
       history = '';
-    } else if (btnVal == '+/-') {
-      if (textToDisplay[0] != '-') {
+    } else if(btnVal == '+/-'){
+      if(textToDisplay[0] != '-'){
         res = '-$textToDisplay';
-      } else {
+      }else{
         res = textToDisplay.substring(1);
       }
-    } else if (btnVal == '<') {
-      res = textToDisplay.substring(0, textToDisplay.length - 1);
-    } else if (btnVal == '+' ||
-        btnVal == '-' ||
-        btnVal == 'X' ||
-        btnVal == '÷') {
-      firstNum = double.parse(textToDisplay);
-      res = textToDisplay + btnVal;
+    } else if(btnVal == '<'){
+      res = textToDisplay.substring(0,textToDisplay.length-1);
+    }
+    else if (btnVal == '+' || btnVal == '-' || btnVal == 'X' || btnVal == '÷') {
+      firstNum = int.parse(textToDisplay);
+      
+      res = textToDisplay.toString()+btnVal.toString();
+     
+      
       operation = btnVal;
-      res = '';
     } else if (btnVal == '=') {
-      secondNum = double.parse(textToDisplay);
+      RegExp exp = new RegExp(r"\d+|\+|-|\*|/|=");
+      
+      Iterable<Match> matches = exp.allMatches(textToDisplay);
+      var list = matches.map((m) => (m.group(0)));
+      print(list);
+      
+      secondNum = int.parse(list.last!);
       if (operation == '+') {
         res = (firstNum + secondNum).toString();
         history =
@@ -81,9 +91,18 @@ class _CalcularAppState extends State<CalcularApp> {
             firstNum.toString() + operation.toString() + secondNum.toString();
       }
       if (operation == '÷') {
+        if (firstNum % secondNum == 0){
         res = (firstNum / secondNum).toString();
         history =
             firstNum.toString() + operation.toString() + secondNum.toString();
+            }else{
+              var dou1 = firstNum.toDouble();
+              var dou2 = secondNum.toDouble();
+            res = (dou1 / dou2).toString();
+        history =
+            dou1.toString() + operation.toString() + dou2.toString();
+            }
+
       }
     } else {
       res = textToDisplay + btnVal;
@@ -91,6 +110,8 @@ class _CalcularAppState extends State<CalcularApp> {
     }
     setState(() {
       textToDisplay = res;
+      
+      
     });
   }
 
@@ -102,20 +123,21 @@ class _CalcularAppState extends State<CalcularApp> {
         ),
         body: Column(children: [
           Container(
-              width: MediaQuery.of(context).size.width,
-              height: 150,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 5),
-                child: Container(
-                  alignment: Alignment.bottomRight,
-                  child: Text(history,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        color: Colors.black45,
-                      )),
+            width: MediaQuery.of(context).size.width,
+            height: 150,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: Container(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  history,
+                  style: const TextStyle(
+                      fontSize: 24, color: Colors.black45,)
                 ),
               ),
-              color: Colors.white),
+            ),
+            color: Colors.white
+          ),
           Container(
             width: MediaQuery.of(context).size.width,
             child: Padding(
